@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SPORT AI — бесплатный помощник учителя физкультуры</title>
+<style>
+:root{--bg:#f3f6fb;--card:#fff;--ink:#172033;--muted:#68758b;--blue:#2457d6;--line:#e3e9f2;--green:#13845b}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 Arial,sans-serif}
+header{background:linear-gradient(120deg,#142b55,#2866d8);color:white;padding:28px 18px}
+.wrap{max-width:1080px;margin:auto;padding:0 16px}h1{margin:0;font-size:30px}header p{margin:7px 0 0;color:#dce7ff}
+nav{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}nav button,.btn{border:0;border-radius:10px;padding:10px 14px;background:#e8eefb;color:#1e438f;font-weight:700;cursor:pointer}
+nav button.active,.btn.primary{background:var(--blue);color:#fff}.panel{display:none}.panel.active{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:15px;padding:18px;margin:12px 0;box-shadow:0 4px 16px #1a31500a}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+label{display:block;font-weight:700;margin:8px 0 5px}input,select,textarea{width:100%;padding:11px;border:1px solid #ccd6e5;border-radius:9px;font:inherit;background:white}
+textarea{min-height:95px;resize:vertical}.muted{color:var(--muted)}.result{background:#eef4ff;border-left:4px solid var(--blue);padding:14px;border-radius:8px;margin-top:12px;white-space:pre-wrap}
+.stat{font-size:26px;font-weight:800;color:var(--blue)}.small{font-size:13px;color:var(--muted)}
+table{width:100%;border-collapse:collapse}td,th{text-align:left;padding:9px;border-bottom:1px solid var(--line)}
+footer{padding:25px 0;color:var(--muted);font-size:13px}
+@media(max-width:600px){h1{font-size:24px}.card{padding:14px}}
+</style>
+</head>
+<body>
+<header><div class="wrap"><h1>SPORT AI</h1><p>Бесплатный цифровой помощник учителя физической культуры и тренера</p></div></header>
+<main class="wrap">
+<nav>
+<button class="active" data-tab="profile">Профиль и тесты</button>
+<button data-tab="analysis">Анализ</button>
+<button data-tab="lesson">План занятия</button>
+<button data-tab="history">История</button>
+</nav>
+<section id="profile" class="panel active">
+<div class="card"><h2>Данные участника</h2><p class="muted">Используйте код участника вместо ФИО. Не вводите медицинские и другие чувствительные данные.</p>
+<div class="grid">
+<div><label>Имя участника</label><input id="code" placeholder="Например, Алексей"></div>
+<div><label>Возраст, лет</label><input id="age" type="number" min="5" max="90" placeholder="Например, 12"></div>
+<div><label>Пол (необязательно)</label><select id="sex"><option value="">Не указывать</option><option>Мужской</option><option>Женский</option></select></div>
+<div><label>Уровень подготовки</label><select id="level"><option>Начальный</option><option>Средний</option><option>Продвинутый</option></select></div>
+</div></div>
+<div class="card"><h2>Результаты физических тестов</h2>
+<div class="grid">
+<div><label>Бег 30 м, секунд</label><input id="run30" type="number" min="0" step=".01" placeholder="Например, 5.8"></div>
+<div><label>Бег/ходьба 6 мин, метров</label><input id="run6" type="number" min="0" placeholder="Например, 900"></div>
+<div><label>Прыжок в длину с места, см</label><input id="jump" type="number" min="0" placeholder="Например, 160"></div>
+<div><label>Отжимания, раз</label><input id="push" type="number" min="0" placeholder="Например, 12"></div>
+<div><label>Самочувствие перед занятием</label><select id="feel"><option>Хорошее</option><option>Удовлетворительное</option><option>Плохое</option></select></div>
+</div><p><button class="btn primary" id="analyzeBtn">Проанализировать результаты</button> <button class="btn" id="saveBtn">Сохранить запись</button></p>
+<div id="analysisResult" class="result" hidden></div></div>
+</section>
+<section id="analysis" class="panel"><div class="card"><h2>Аналитика и рекомендации</h2><p>Заполните профиль и тесты, затем нажмите «Проанализировать результаты». Система сформирует краткую сводку и осторожные рекомендации.</p><div id="analysisCopy" class="result">Результаты анализа появятся здесь.</div></div>
+<div class="card"><h3>Как интерпретировать результаты</h3><p>Показатели следует сравнивать только с подходящими возрастными и половыми нормативами, полученными по единому протоколу тестирования. Эта демонстрационная версия не ставит диагнозов и не определяет медицинский допуск.</p></div></section>
+<section id="lesson" class="panel"><div class="card"><h2>Конструктор занятия</h2><div class="grid">
+<div><label>Возрастная группа</label><select id="lessonAge"><option>Начальная школа (7–10 лет)</option><option>Средняя школа (11–14 лет)</option><option>Старшая школа (15–17 лет)</option><option>Взрослые</option></select></div>
+<div><label>Цель занятия</label><select id="goal"><option>Развитие выносливости</option><option>Развитие быстроты</option><option>Развитие силы</option><option>Развитие координации</option><option>Развитие гибкости</option><option>Общая физическая подготовка</option></select></div>
+<div><label>Продолжительность, минут</label><select id="duration"><option>30</option><option selected>45</option><option>60</option><option>90</option></select></div>
+<div><label>Интенсивность</label><select id="intensity"><option>Низкая</option><option selected>Умеренная</option><option>Повышенная</option></select></div>
+</div><p><button class="btn primary" id="makeLesson">Составить план занятия</button> <button class="btn" id="printLesson">Печать / сохранить PDF</button></p><div id="lessonResult" class="result">Выберите параметры и сформируйте план.</div></div></section>
+<section id="history" class="panel"><div class="card"><h2>История записей на этом устройстве</h2><p class="small">Данные хранятся только в браузере этого устройства. Они не передаются в общую базу.</p><div id="historyList"></div><button class="btn" id="clearHistory">Очистить историю</button></div></section>
+<footer>SPORT AI — учебно-методический демонстрационный прототип. Рекомендации не заменяют оценку квалифицированного специалиста. Бесплатная версия работает локально в браузере и не использует платный API.</footer>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+document.querySelectorAll('nav button').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('nav button,.panel').forEach(x=>x.classList.remove('active'));b.classList.add('active');$(b.dataset.tab).classList.add('active');if(b.dataset.tab==='history')renderHistory()}));
+function vals(){return {code:$('code').value.trim()||'Без кода',age:$('age').value,sex:$('sex').value,level:$('level').value,run30:$('run30').value,run6:$('run6').value,jump:$('jump').value,push:$('push').value,feel:$('feel').value,date:new Date().toLocaleString('ru-RU')}}
+function analyze(){let v=vals(),out=[];out.push('Участник: '+v.code+'; возраст: '+(v.age||'не указан')+'; уровень: '+v.level+'.');if(v.feel==='Плохое')out.push('Самочувствие отмечено как плохое: не следует начинать интенсивную нагрузку; необходимо сообщить ответственному специалисту и действовать по установленным правилам безопасности.');else if(v.feel==='Удовлетворительное')out.push('Самочувствие удовлетворительное: начните с разминки и контролируйте состояние во время занятия.');else out.push('Самочувствие хорошее по самооценке участника; это не является медицинским допуском.');let count=0;[['Бег 30 м',v.run30,'с'],['Бег/ходьба 6 мин',v.run6,'м'],['Прыжок с места',v.jump,'см'],['Отжимания',v.push,'раз']].forEach(a=>{if(a[1]!==''){out.push(a[0]+': '+a[1]+' '+a[2]+'.');count++}});if(!count)out.push('Числовые результаты тестов не заполнены.');out.push('Рекомендация: фиксируйте результаты в одинаковых условиях и сравнивайте динамику одного участника с его предыдущими измерениями. Не делайте выводов о физической подготовленности без валидированных нормативов для соответствующей возрастной группы и протокола тестирования.');out.push('Это алгоритмическая сводка, а не заключение генеративного ИИ или медицинская оценка.');$('analysisResult').textContent=out.join('\\n\\n');$('analysisCopy').textContent=out.join('\\n\\n');$('analysisResult').hidden=false;return out.join('\\n\\n')}
+$('analyzeBtn').onclick=analyze;
+$('saveBtn').onclick=()=>{let v=vals();v.summary=analyze();let h=JSON.parse(localStorage.getItem('sportai_history')||'[]');h.unshift(v);localStorage.setItem('sportai_history',JSON.stringify(h.slice(0,100)));alert('Запись сохранена в этом браузере.');};
+$('makeLesson').onclick=()=>{let age=$('lessonAge').value,goal=$('goal').value,d=+$('duration').value,int=$('intensity').value;let warm=Math.round(d*.2),main=Math.round(d*.6),cool=d-warm-main;let exercises={ 'Развитие выносливости':'чередование ходьбы и лёгкого бега; равномерный бег по самочувствию; подвижная игра умеренной интенсивности','Развитие быстроты':'упражнения на технику бега; ускорения на коротких отрезках с полным отдыхом; эстафеты','Развитие силы':'упражнения с собственным весом; приседания; упоры и облегчённые отжимания; упражнения на мышцы корпуса','Развитие координации':'бег с изменением направления; упражнения на равновесие; координационная лестница или разметка; эстафеты','Развитие гибкости':'динамическая разминка; контролируемые упражнения на подвижность суставов; спокойная заключительная растяжка','Общая физическая подготовка':'круговая станция из простых упражнений; беговые и прыжковые задания малой/умеренной сложности; командная подвижная игра'};let text='ПЛАН ЗАНЯТИЯ\\nВозрастная группа: '+age+'\\nЦель: '+goal+'\\nПродолжительность: '+d+' минут\\nПланируемая интенсивность: '+int+'\\n\\n1. Подготовительная часть — '+warm+' мин. Построение, проверка готовности, объяснение задач, общая и специальная разминка.\\n\\n2. Основная часть — '+main+' мин. '+exercises[goal]+'. Подбирайте объём и сложность с учётом подготовленности группы, условий и техники выполнения.\\n\\n3. Заключительная часть — '+cool+' мин. Спокойная ходьба, дыхательные упражнения, восстановление дыхания, краткая рефлексия.\\n\\nБезопасность: обеспечить дистанцию и исправность инвентаря, объяснить технику, наблюдать за состоянием участников, прекратить упражнение при боли, головокружении или резком ухудшении самочувствия. Для детей нагрузка должна соответствовать возрасту и образовательным задачам.';$('lessonResult').textContent=text;};
+$('printLesson').onclick=()=>window.print();
+function renderHistory(){let h=JSON.parse(localStorage.getItem('sportai_history')||'[]');$('historyList').innerHTML=h.length?'<table><tr><th>Дата</th><th>Имя участника</th><th>Возраст</th><th>Самочувствие</th></tr>'+h.map(x=>'<tr><td>'+x.date+'</td><td>'+esc(x.code)+'</td><td>'+esc(x.age||'—')+'</td><td>'+esc(x.feel)+'</td></tr>').join('')+'</table>':'<p class="muted">Сохранённых записей пока нет.</p>'}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+$('clearHistory').onclick=()=>{if(confirm('Удалить все записи из истории этого браузера?')){localStorage.removeItem('sportai_history');renderHistory()}};
+</script></body></html>
